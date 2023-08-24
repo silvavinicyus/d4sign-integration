@@ -1,6 +1,7 @@
-import express, { Request, Response, Router, response } from 'express'
+import express, { Request, Response, Router } from 'express'
 import * as dotenv from 'dotenv'
 import { D4SignService } from './services/d4sign'
+import multer from 'multer'
 
 dotenv.config()
 
@@ -13,15 +14,14 @@ router.get('/hello', async (_request: Request, response: Response) => {
   return response.json('Hello World.')
 })
 
-
-router.post('/upload', async (request: Request, response: Response) => {
-  const { file } = request.body    
-
+router.post('/upload', multer().single('file'), async (request: Request, response: Response) => {
+  const file = request.file
+  
   const service = new D4SignService();
 
   const uploadFile = await service.uploadDocument({
     emails: ['vinicyus.silva@luby.software.fake', 'gabriel.carvalho@luby.software.fake'],
-    file: file
+    file: file!
   })
 
   if(uploadFile.isLeft()) {

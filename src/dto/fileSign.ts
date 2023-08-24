@@ -1,6 +1,6 @@
 export interface IInputSign {
   emails: string[]
-  file: File
+  file: Express.Multer.File
 }
 
 export type IOutputSign = {
